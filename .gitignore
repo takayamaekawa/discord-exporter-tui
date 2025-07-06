@@ -1,0 +1,4 @@
+channels.json
+config.json
+*.xlsx
+venv/
