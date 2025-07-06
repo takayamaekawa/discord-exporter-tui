@@ -100,31 +100,31 @@ class DiscordExporter:
                             async for message in messageable_channel.history(limit=10):
                                 try:
                                     # メッセージの基本情報をデバッグ出力
-                                    print(f"    メッセージID: {message.id} (type: {type(message.id)})")
-                                    print(f"    created_at: {message.created_at} (type: {type(message.created_at)})")
+                                    # print(f"    メッセージID: {message.id} (type: {type(message.id)})")
+                                    # print(f"    created_at: {message.created_at} (type: {type(message.created_at)})")
                                     
                                     # created_atが正しいdatetimeオブジェクトかどうかチェック
                                     if not hasattr(message.created_at, 'year'):
-                                        print(f"    警告: created_atが正しいdatetimeオブジェクトではありません")
+                                        # print(f"    警告: created_atが正しいdatetimeオブジェクトではありません")
                                         continue
                                     
                                     recent_messages.append(message)
                                 except Exception as msg_error:
-                                    print(f"    メッセージ処理エラー: {msg_error}")
+                                    # print(f"    メッセージ処理エラー: {msg_error}")
                                     continue
                         except Exception as history_error:
-                            print(f"  メッセージ履歴取得エラー: {history_error}")
+                            # print(f"  メッセージ履歴取得エラー: {history_error}")
                             estimated_messages = 0
                             continue
 
                         # 推定総メッセージ数（簡易計算）
-                        print(f"  取得したメッセージ数: {len(recent_messages)}")
+                        # print(f"  取得したメッセージ数: {len(recent_messages)}")
                         if recent_messages and len(recent_messages) > 0:
-                            print(f"  メッセージの日付比較を開始...")
+                            # print(f"  メッセージの日付比較を開始...")
                             try:
                                 # 比較前に各メッセージの日付をチェック
-                                for i, msg in enumerate(recent_messages):
-                                    print(f"    メッセージ{i}: {msg.created_at} (type: {type(msg.created_at)})")
+                                # for i, msg in enumerate(recent_messages):
+                                #     print(f"    メッセージ{i}: {msg.created_at} (type: {type(msg.created_at)})")
                                 
                                 oldest_message = min(
                                     recent_messages, key=lambda m: m.created_at
@@ -132,12 +132,12 @@ class DiscordExporter:
                                 newest_message = max(
                                     recent_messages, key=lambda m: m.created_at
                                 )
-                                print(f"  最旧: {oldest_message.created_at}, 最新: {newest_message.created_at}")
+                                # print(f"  最旧: {oldest_message.created_at}, 最新: {newest_message.created_at}")
                             except (TypeError, ValueError) as e:
-                                print(f"  メッセージ比較エラー: {e}")
-                                print(f"  エラー詳細: recent_messagesの型 = {type(recent_messages)}")
-                                for i, msg in enumerate(recent_messages):
-                                    print(f"    エラーメッセージ{i}: id={msg.id}, created_at={msg.created_at} (type: {type(msg.created_at)})")
+                                # print(f"  メッセージ比較エラー: {e}")
+                                # print(f"  エラー詳細: recent_messagesの型 = {type(recent_messages)}")
+                                # for i, msg in enumerate(recent_messages):
+                                #     print(f"    エラーメッセージ{i}: id={msg.id}, created_at={msg.created_at} (type: {type(msg.created_at)})")
                                 estimated_messages = len(recent_messages)
                             else:
                                 # 正常に比較できた場合の処理
@@ -1145,8 +1145,12 @@ class DiscordExporter:
         try:
             import asyncio
             # イベントループが開いているかどうかチェック
-            loop = asyncio.get_event_loop()
-            if loop.is_closed():
+            try:
+                loop = asyncio.get_running_loop()
+                if loop.is_closed():
+                    return
+            except RuntimeError:
+                # イベントループが稼動していない場合
                 return
             
             # クライアントが接続されているかどうかチェック
@@ -1156,6 +1160,9 @@ class DiscordExporter:
                 print("接続クローズ完了")
             elif not self.client.is_closed():
                 await self.client.close()
+                
+            # コネクターのクリーンアップを待つ
+            await asyncio.sleep(0.1)
                 
         except Exception as close_error:
             # クリーンアップエラーは静かに無視
@@ -1626,24 +1633,24 @@ class DiscordExporter:
                 safe_after = after_date if after_date is not None else None
                 safe_before = before_date if before_date is not None else None
                 
-                print(f"  メッセージ取得を開始...")
-                print(f"    limit: {safe_limit} (type: {type(safe_limit)})")
-                print(f"    after: {safe_after} (type: {type(safe_after)})")
-                print(f"    before: {safe_before} (type: {type(safe_before)})")
+                # print(f"  メッセージ取得を開始...")
+                # print(f"    limit: {safe_limit} (type: {type(safe_limit)})")
+                # print(f"    after: {safe_after} (type: {type(safe_after)})")
+                # print(f"    before: {safe_before} (type: {type(safe_before)})")
                 
                 try:
                     # 段階的にパラメータを追加してエラーを特定
-                    print("    基本的なhistory()を試行...")
+                    # print("    基本的なhistory()を試行...")
                     
                     # 最もシンプルな形から開始
                     if safe_limit is None and safe_after is None and safe_before is None:
-                        print("    パラメータなしで実行")
+                        # print("    パラメータなしで実行")
                         message_iter = messageable_channel.history()
                     elif safe_after is None and safe_before is None:
-                        print(f"    limit={safe_limit}のみで実行")
+                        # print(f"    limit={safe_limit}のみで実行")
                         message_iter = messageable_channel.history(limit=safe_limit)
                     else:
-                        print(f"    全パラメータで実行")
+                        # print(f"    全パラメータで実行")
                         message_iter = messageable_channel.history(
                             limit=safe_limit,
                             after=safe_after,
@@ -1653,10 +1660,10 @@ class DiscordExporter:
                     async for message in message_iter:
                         try:
                             # メッセージの基本情報をデバッグ出力
-                            if message_count < 5:  # 最初の5件だけ詳細出力
-                                print(f"    メッセージ{message_count}: ID={message.id} (type: {type(message.id)})")
-                                print(f"      created_at: {message.created_at} (type: {type(message.created_at)})")
-                                print(f"      author: {message.author.display_name} (id: {message.author.id}, type: {type(message.author.id)})")
+                            # if message_count < 5:  # 最初の5件だけ詳細出力
+                            #     print(f"    メッセージ{message_count}: ID={message.id} (type: {type(message.id)})")
+                            #     print(f"      created_at: {message.created_at} (type: {type(message.created_at)})")
+                            #     print(f"      author: {message.author.display_name} (id: {message.author.id}, type: {type(message.author.id)})")
                             
                             # 添付ファイル情報
                             attachments = []
@@ -1714,20 +1721,20 @@ class DiscordExporter:
                                 print(f"  取得済み: {message_count} メッセージ")
                                 
                         except Exception as msg_error:
-                            print(f"  メッセージ処理エラー (message_count={message_count}): {msg_error}")
-                            print(f"    問題のメッセージID: {getattr(message, 'id', 'Unknown')}")
-                            print(f"    created_at: {getattr(message, 'created_at', 'Unknown')} (type: {type(getattr(message, 'created_at', None))})")
+                            # print(f"  メッセージ処理エラー (message_count={message_count}): {msg_error}")
+                            # print(f"    問題のメッセージID: {getattr(message, 'id', 'Unknown')}")
+                            # print(f"    created_at: {getattr(message, 'created_at', 'Unknown')} (type: {type(getattr(message, 'created_at', None))})")
                             continue
                             
                 except Exception as history_error:
-                    print(f"  メッセージ履歴取得エラー: {history_error}")
-                    print(f"  エラーの種類: {type(history_error).__name__}")
+                    # print(f"  メッセージ履歴取得エラー: {history_error}")
+                    # print(f"  エラーの種類: {type(history_error).__name__}")
                     
                     # 代替手法を試行
-                    print("  代替手法で再試行...")
+                    # print("  代替手法で再試行...")
                     try:
                         # 最もシンプルなメッセージ取得
-                        print("    シンプルなhistory(limit=10)で再試行")
+                        # print("    シンプルなhistory(limit=10)で再試行")
                         simple_count = 0
                         async for simple_message in messageable_channel.history(limit=10):
                             try:
@@ -1752,15 +1759,15 @@ class DiscordExporter:
                                 all_messages_data.append(simple_data)
                                 simple_count += 1
                             except Exception as simple_error:
-                                print(f"    シンプルメッセージ処理エラー: {simple_error}")
+                                # print(f"    シンプルメッセージ処理エラー: {simple_error}")
                                 continue
                         
-                        print(f"  代替手法で{simple_count}件取得成功")
+                        # print(f"  代替手法で{simple_count}件取得成功")
                         message_count = simple_count
                         
                     except Exception as fallback_error:
-                        print(f"  代替手法も失敗: {fallback_error}")
-                        print(f"  チャンネル '{channel_name}' をスキップします")
+                        # print(f"  代替手法も失敗: {fallback_error}")
+                        # print(f"  チャンネル '{channel_name}' をスキップします")
                         continue
 
                 print(f"✅ {channel_name}: {message_count} メッセージ取得完了")
@@ -1774,28 +1781,28 @@ class DiscordExporter:
             # DataFrameに変換
             try:
                 df = pd.DataFrame(all_messages_data)
-                print(f"DataFrame作成完了: {len(df)} rows, {len(df.columns)} columns")
+                # print(f"DataFrame作成完了: {len(df)} rows, {len(df.columns)} columns")
                 
                 # ソート前にデータ型を確認
-                print(f"timestamp列のデータ型: {df['timestamp'].dtype}")
-                if len(df) > 0:
-                    print(f"timestampサンプル: {df['timestamp'].iloc[0]} (type: {type(df['timestamp'].iloc[0])})")
+                # print(f"timestamp列のデータ型: {df['timestamp'].dtype}")
+                # if len(df) > 0:
+                #     print(f"timestampサンプル: {df['timestamp'].iloc[0]} (type: {type(df['timestamp'].iloc[0])})")
                 
                 # ソート処理
-                print("DataFrameをソート中...")
+                # print("DataFrameをソート中...")
                 df = df.sort_values(["guild_name", "channel_name", "timestamp"])
-                print("ソート完了")
+                # print("ソート完了")
                 
             except Exception as df_error:
-                print(f"データ処理エラー: {df_error}")
-                print(f"エラーの種類: {type(df_error).__name__}")
+                # print(f"データ処理エラー: {df_error}")
+                # print(f"エラーの種類: {type(df_error).__name__}")
                 
                 # データの一部を出力してデバッグ
-                if all_messages_data:
-                    print("最初のメッセージデータ:")
-                    first_msg = all_messages_data[0]
-                    for key, value in first_msg.items():
-                        print(f"  {key}: {value} (type: {type(value)})")
+                # if all_messages_data:
+                #     print("最初のメッセージデータ:")
+                #     first_msg = all_messages_data[0]
+                #     for key, value in first_msg.items():
+                #         print(f"  {key}: {value} (type: {type(value)})")
                 
                 return False
 
@@ -1895,17 +1902,12 @@ class DiscordExporter:
             print(f"スタックトレース: {traceback.format_exc()}")
             return False
         finally:
-            try:
-                if hasattr(self.client, '_ready') and self.client._ready.is_set():
-                    print("接続をクローズ中...")
-                    await self.client.close()
-                    print("接続クローズ完了")
-            except Exception as close_error:
-                print(f"接続クローズエラー: {close_error}")
-                pass
+            # クリーンアップを実行
+            await self.cleanup_client()
 
 
 async def main():
+    exporter = None
     try:
         parser = argparse.ArgumentParser(description="Discord Chat to XLSX Exporter")
         parser.add_argument("-t", "--token", help="Discord Bot Token")
@@ -1936,6 +1938,7 @@ async def main():
                 
                 # メインメニューループ
                 temp_exporter = DiscordExporter("")
+                exporter = temp_exporter
                 
                 while True:
                     try:
@@ -1987,6 +1990,9 @@ async def main():
                                 if not temp_exporter.ask_continue():
                                     await temp_exporter.cleanup_client()
                                     return
+                            finally:
+                                # 必ずクリーンアップを実行
+                                await temp_exporter.cleanup_client()
                             
                             # 新しいクライアントインスタンスを作成（接続をリセット）
                             temp_exporter = DiscordExporter("")
@@ -2062,6 +2068,9 @@ async def main():
                                 if not temp_exporter.ask_continue():
                                     await temp_exporter.cleanup_client()
                                     return
+                            finally:
+                                # 必ずクリーンアップを実行
+                                await temp_exporter.cleanup_client()
                             
                             # 新しいクライアントインスタンスを作成
                             temp_exporter = DiscordExporter("")
@@ -2194,6 +2203,15 @@ async def main():
         print("\nプログラムを終了します。")
     except Exception as e:
         print(f"予期しないエラーが発生しました: {e}")
+    finally:
+        # クリーンアップを実行
+        if exporter:
+            try:
+                await exporter.cleanup_client()
+            except:
+                pass
+        # コネクターのクリーンアップを待つ
+        await asyncio.sleep(0.1)
 
 
 if __name__ == "__main__":
@@ -2203,6 +2221,10 @@ if __name__ == "__main__":
         print("\nプログラムを終了します。")
     except Exception as e:
         print(f"予期しないエラーが発生しました: {e}")
+    finally:
+        # コネクターのクリーンアップを待つ
+        import time
+        time.sleep(0.1)
 
 # 使用例:
 # python discord_exporter.py -t "YOUR_BOT_TOKEN" -c 123456789 -o "chat.xlsx"
