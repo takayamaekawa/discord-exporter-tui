@@ -2,3 +2,7 @@ channels.json
 config.json
 *.xlsx
 venv/
+localpycs/
+discord_exporter.spec
+build/discord_exporter/
+dist/
