@@ -55,15 +55,17 @@ jobs:
       run: |
         copy dist\discord_exporter.exe release\discord_exporter_windows.exe
 
-    - name: Generate checksums (Linux/macOS)
-      if: matrix.platform != 'windows'
+    - name: Generate checksums (Linux)
+      if: matrix.platform == 'linux'
       run: |
         cd release
-        if command -v sha256sum > /dev/null 2>&1; then
-          sha256sum discord_exporter_${{ matrix.platform }} > discord_exporter_${{ matrix.platform }}.sha256
-        else
-          shasum -a 256 discord_exporter_${{ matrix.platform }} > discord_exporter_${{ matrix.platform }}.sha256
-        fi
+        sha256sum discord_exporter_${{ matrix.platform }} > discord_exporter_${{ matrix.platform }}.sha256
+
+    - name: Generate checksums (macOS)
+      if: matrix.platform == 'darwin'
+      run: |
+        cd release
+        shasum -a 256 discord_exporter_${{ matrix.platform }} > discord_exporter_${{ matrix.platform }}.sha256
 
     - name: Generate checksums (Windows)
       if: matrix.platform == 'windows'
