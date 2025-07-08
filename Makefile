@@ -4,7 +4,7 @@
 # 設定
 REPO_OWNER := takayamaekawa
 REPO_NAME := discord-exporter-tui
-VERSION := v1.1
+VERSION := latest
 BINARY_NAME := discord_exporter
 INSTALL_DIR := /usr/local/bin
 PYTHON := python3
