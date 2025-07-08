@@ -103,12 +103,14 @@ download_binary() {
   # バイナリをダウンロード
   if ! curl -fsSL "$BINARY_URL" -o "$binary_path"; then
     print_error "Failed to download binary"
+    rm -rf "$tmp_dir"
     exit 1
   fi
 
   # チェックサムをダウンロード
   if ! curl -fsSL "$CHECKSUM_URL" -o "$checksum_path"; then
     print_error "Failed to download checksum file"
+    rm -rf "$tmp_dir"
     exit 1
   fi
 
@@ -122,7 +124,8 @@ download_binary() {
   # 実行権限を付与
   chmod +x "$binary_path"
 
-  echo "$binary_path"
+  # パスを標準出力に出力（print_statusを使わない）
+  printf "%s" "$binary_path"
 }
 
 # インストール
@@ -233,7 +236,16 @@ main() {
 
   check_system
 
-  local binary_path=$(download_binary)
+  # バイナリをダウンロード
+  local binary_path
+  binary_path=$(download_binary)
+
+  # ダウンロードが成功したかチェック
+  if [ ! -f "$binary_path" ]; then
+    print_error "Downloaded binary not found: $binary_path"
+    exit 1
+  fi
+
   install_binary "$binary_path"
   setup_environment
 
