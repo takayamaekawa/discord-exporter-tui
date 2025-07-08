@@ -67,13 +67,13 @@ verify_checksum() {
   local file=$1
   local expected_hash_file=$2
 
-  print_status "Verifying checksum..."
+  print_status "Verifying checksum..." >&2
 
   # チェックサムファイルから期待値を取得
   local expected_hash=$(grep "${BINARY_NAME}" "$expected_hash_file" | cut -d' ' -f1)
 
   if [ -z "$expected_hash" ]; then
-    print_error "Could not find checksum for ${BINARY_NAME}"
+    print_error "Could not find checksum for ${BINARY_NAME}" >&2
     return 1
   fi
 
@@ -81,19 +81,20 @@ verify_checksum() {
   local actual_hash=$(sha256sum "$file" | cut -d' ' -f1)
 
   if [ "$actual_hash" = "$expected_hash" ]; then
-    print_status "✓ Checksum verified"
+    print_status "✓ Checksum verified" >&2
     return 0
   else
-    print_error "✗ Checksum mismatch!"
-    print_error "Expected: $expected_hash"
-    print_error "Actual:   $actual_hash"
+    print_error "✗ Checksum mismatch!" >&2
+    print_error "Expected: $expected_hash" >&2
+    print_error "Actual:   $actual_hash" >&2
     return 1
   fi
 }
 
 # バイナリのダウンロード
 download_binary() {
-  print_status "Downloading discord-exporter-tui ${VERSION}..."
+  # エラー出力にリダイレクトしてログを表示
+  print_status "Downloading discord-exporter-tui ${VERSION}..." >&2
 
   # 一時ディレクトリを作成
   local tmp_dir=$(mktemp -d)
@@ -102,21 +103,21 @@ download_binary() {
 
   # バイナリをダウンロード
   if ! curl -fsSL "$BINARY_URL" -o "$binary_path"; then
-    print_error "Failed to download binary"
+    print_error "Failed to download binary" >&2
     rm -rf "$tmp_dir"
     exit 1
   fi
 
   # チェックサムをダウンロード
   if ! curl -fsSL "$CHECKSUM_URL" -o "$checksum_path"; then
-    print_error "Failed to download checksum file"
+    print_error "Failed to download checksum file" >&2
     rm -rf "$tmp_dir"
     exit 1
   fi
 
   # チェックサムを検証
   if ! verify_checksum "$binary_path" "$checksum_path"; then
-    print_error "Checksum verification failed"
+    print_error "Checksum verification failed" >&2
     rm -rf "$tmp_dir"
     exit 1
   fi
@@ -124,8 +125,8 @@ download_binary() {
   # 実行権限を付与
   chmod +x "$binary_path"
 
-  # パスを標準出力に出力（print_statusを使わない）
-  printf "%s" "$binary_path"
+  # パスを標準出力に出力（ログなし）
+  echo "$binary_path"
 }
 
 # インストール
