@@ -24,7 +24,7 @@ DiscordチャンネルのメッセージをExcelファイル（XLSX）にエク�
 
 1. インストール：
 ```bash
-curl -fsSL https://provider.maekawa.dev/scripts/install.sh | bash
+curl -fsSL https://provider.maekawa.dev/install.sh | bash -s discord-exporter
 ```
 または、以下のコマンドで手動インストール：
 ```bash
