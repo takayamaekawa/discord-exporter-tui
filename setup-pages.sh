@@ -118,7 +118,13 @@ cat >index.html <<'EOF'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Exporter TUI</title>
+    <title>Discord Exporter TUI - Installation</title>
+    <meta name="description" content="Easy installation for Discord Exporter TUI - A terminal-based Discord chat exporter">
+    <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877828132102103"
+        crossorigin="anonymous">
+    </script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -127,74 +133,171 @@ cat >index.html <<'EOF'
             padding: 2rem;
             line-height: 1.6;
             color: #333;
+            background: #fff;
         }
         .header {
             text-align: center;
             margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .header h1 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
         }
         .install-section {
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 2rem;
             margin: 2rem 0;
+            border: 1px solid #e9ecef;
+        }
+        .install-section h2 {
+            color: #343a40;
+            margin-top: 0;
         }
         .code {
             background: #1e1e1e;
             color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Consolas', monospace;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', 'SF Mono', monospace;
             overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid #333;
         }
         .button {
             display: inline-block;
-            background: #0066cc;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 0.75rem 1.5rem;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 8px;
             margin: 0.5rem;
+            transition: transform 0.2s;
+            font-weight: 500;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .requirements {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .ad-container {
+            margin: 2rem 0;
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Discord Exporter TUI</h1>
-        <p>A terminal-based Discord chat exporter</p>
-        <a href="https://github.com/takayamaekawa/discord-exporter-tui" class="button">View on GitHub</a>
+        <h1>🚀 Discord Exporter TUI</h1>
+        <p>A powerful terminal-based Discord chat exporter</p>
+        <a href="https://github.com/takayamaekawa/discord-exporter-tui" class="button">📁 View on GitHub</a>
+        <a href="https://github.com/takayamaekawa/discord-exporter-tui/releases" class="button">📦 Releases</a>
+    </div>
+
+    <div class="ad-container">
+        <!-- AdSense Ad Unit -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2877828132102103"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <div class="install-section">
-        <h2>Quick Install (Linux)</h2>
-        <p>Run this command in your terminal:</p>
+        <h2>⚡ Quick Install (Linux)</h2>
+        <p>Run this one-liner command in your terminal:</p>
         <div class="code">
-curl -fsSL https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh | bash
+curl -fsSL https://provider.maekawa.dev/scripts/install.sh | bash
         </div>
+        <p><small>This script will automatically download, verify, and install the latest version.</small></p>
     </div>
 
     <div class="install-section">
-        <h2>Manual Installation</h2>
-        <p>If you prefer to review the script first:</p>
+        <h2>🔍 Manual Installation</h2>
+        <p>If you prefer to review the script before running it:</p>
         <div class="code">
 # Download and review the script
-curl -fsSL https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh -o install.sh
+curl -fsSL https://provider.maekawa.dev/scripts/install.sh -o install.sh
+
+# Make it executable and review
+chmod +x install.sh
 cat install.sh
+
 # Run the script
-bash install.sh
+./install.sh
         </div>
     </div>
 
-    <div class="install-section">
-        <h2>Requirements</h2>
+    <div class="ad-container">
+        <!-- Second AdSense Ad Unit -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2877828132102103"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="requirements">
+        <h2>📋 Requirements</h2>
         <ul>
-            <li>Linux system</li>
-            <li>curl</li>
-            <li>sha256sum</li>
+            <li>🐧 Linux system (x86_64 or ARM64)</li>
+            <li>📡 curl (for downloading)</li>
+            <li>🔐 sha256sum (for verification)</li>
+            <li>👤 sudo access (for installation to /usr/local/bin)</li>
         </ul>
+    </div>
+
+    <div class="install-section">
+        <h2>🛠️ Features</h2>
+        <ul>
+            <li>Export Discord channels to various formats</li>
+            <li>Terminal-based user interface</li>
+            <li>Secure token-based authentication</li>
+            <li>Multiple export formats supported</li>
+            <li>Fast and lightweight</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Made with ❤️ by <a href="https://github.com/takayamaekawa">takayamaekawa</a></p>
+        <p>Licensed under MIT License</p>
     </div>
 </body>
 </html>
 EOF
+
+# CNAMEファイルを作成
+print_status "Creating CNAME file for custom domain"
+echo "provider.maekawa.dev" >CNAME
 
 # README.mdを作成
 print_status "Creating README.md for GitHub Pages"
@@ -206,14 +309,14 @@ This branch contains the installation scripts and GitHub Pages content for Disco
 ## Quick Install
 
 ```bash
-curl -fsSL https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh | bash
+curl -fsSL https://provider.maekawa.dev/scripts/install.sh | bash
 ```
 
 ## Manual Install
 
 ```bash
 # Download the script
-curl -fsSL https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh -o install.sh
+curl -fsSL https://provider.maekawa.dev/scripts/install.sh -o install.sh
 
 # Review the script
 cat install.sh
@@ -251,11 +354,11 @@ echo "3. Set Source to: Deploy from a branch"
 echo "4. Select branch: gh-pages"
 echo "5. Select folder: / (root)"
 echo ""
-echo -e "${BLUE}URLs (will be available after GitHub Pages deployment):${NC}"
-echo "Install script: https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh"
-echo "Landing page:   https://takayamaekawa.github.io/discord-exporter-tui/"
+echo -e "${BLUE}URLs (will be available after DNS propagation and GitHub Pages deployment):${NC}"
+echo "Install script: https://provider.maekawa.dev/scripts/install.sh"
+echo "Landing page:   https://provider.maekawa.dev/"
 echo ""
 echo -e "${BLUE}Install command for users:${NC}"
-echo "curl -fsSL https://takayamaekawa.github.io/discord-exporter-tui/scripts/install.sh | bash"
+echo "curl -fsSL https://provider.maekawa.dev/scripts/install.sh | bash"
 echo ""
 echo -e "${YELLOW}Note:${NC} It may take a few minutes for GitHub Pages to deploy."

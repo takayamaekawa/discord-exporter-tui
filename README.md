@@ -22,9 +22,16 @@ DiscordチャンネルのメッセージをExcelファイル（XLSX）にエク�
 
 ## インストール
 
-1. 必要なライブラリをインストール：
+1. インストール：
 ```bash
+curl -fsSL https://provider.maekawa.dev/scripts/install.sh | bash
+```
+または、以下のコマンドで手動インストール：
+```bash
+git clone https://github.com/takayamaekawa/discord-exporter.git
+cd discord-exporter
 pip install -r requirements.txt
+python discord_exporter.py
 ```
 
 2. Discord Bot Tokenを取得：
