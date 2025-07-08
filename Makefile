@@ -14,14 +14,19 @@ VENV_DIR := venv
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	PLATFORM := linux
+	BINARY_SUFFIX := _linux
 else ifeq ($(UNAME_S),Darwin)
 	PLATFORM := darwin
+	BINARY_SUFFIX := _darwin
 else ifeq ($(findstring CYGWIN,$(UNAME_S)),CYGWIN)
 	PLATFORM := windows
+	BINARY_SUFFIX := _windows.exe
 else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
 	PLATFORM := windows
+	BINARY_SUFFIX := _windows.exe
 else
 	PLATFORM := unknown
+	BINARY_SUFFIX := 
 endif
 
 # デフォルトターゲット
@@ -63,10 +68,10 @@ install-binary:
 		exit 1; \
 	fi
 	@tmp_dir=$$(mktemp -d); \
-	binary_path="$$tmp_dir/$(BINARY_NAME)"; \
+	binary_path="$$tmp_dir/$(BINARY_NAME)$(BINARY_SUFFIX)"; \
 	checksum_path="$$tmp_dir/hashes.sha256"; \
-	echo "Downloading $(BINARY_NAME) $(VERSION)..."; \
-	if ! curl -fsSL "https://github.com/$(REPO_OWNER)/$(REPO_NAME)/releases/download/$(VERSION)/$(BINARY_NAME)" -o "$$binary_path"; then \
+	echo "Downloading $(BINARY_NAME)$(BINARY_SUFFIX) $(VERSION)..."; \
+	if ! curl -fsSL "https://github.com/$(REPO_OWNER)/$(REPO_NAME)/releases/download/$(VERSION)/$(BINARY_NAME)$(BINARY_SUFFIX)" -o "$$binary_path"; then \
 		echo "Error: Failed to download binary"; \
 		rm -rf "$$tmp_dir"; \
 		exit 1; \
@@ -76,9 +81,9 @@ install-binary:
 		rm -rf "$$tmp_dir"; \
 		exit 1; \
 	fi; \
-	expected_hash=$$(grep "$(BINARY_NAME)" "$$checksum_path" | cut -d' ' -f1); \
+	expected_hash=$$(grep "$(BINARY_NAME)$(BINARY_SUFFIX)" "$$checksum_path" | cut -d' ' -f1); \
 	if [ -z "$$expected_hash" ]; then \
-		echo "Error: Could not find checksum for $(BINARY_NAME)"; \
+		echo "Error: Could not find checksum for $(BINARY_NAME)$(BINARY_SUFFIX)"; \
 		rm -rf "$$tmp_dir"; \
 		exit 1; \
 	fi; \
